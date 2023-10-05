@@ -1,3 +1,5 @@
+use std::error::Error;
+use std::fmt::{Display, Debug};
 use std::fs::{File, read_to_string};
 use std::io::{self, Read};
 
@@ -6,6 +8,18 @@ use std::io::{self, Read};
 ///     use when doesn't matter what error is returned (ie callers don't need to handle errors differently)
 /// other way -> create enum CustomError {ERRORTYPE1, ERRORTYPE2}
 ///     return CustomError enum from fn & ensure map_err(|e| CustomError::)?
+
+impl Display for User {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        todo!()
+    }
+}
+
+impl Debug for User {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("User").field("firstname", &self.firstname).field("lastname", &self.lastname).finish()
+    }
+}
 
 
 fn main() {
