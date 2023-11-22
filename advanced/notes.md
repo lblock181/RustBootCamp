@@ -47,3 +47,10 @@ Async Task
 Comes down to CPU or I/O bound workload
 
 ## Working with threads
+see [main.rs](./concurrency/main.rs) for code snippets
+- spanwning threads will return handle
+- to ensure all threads complete before main thread terminates
+    - use `handle.join().unwrap()`
+    - set equal to value if thread returns values
+- threads take ownership of variables
+    - to use variable within thread scope, use `move` keyword
