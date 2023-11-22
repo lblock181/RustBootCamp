@@ -54,3 +54,28 @@ see [main.rs](./concurrency/main.rs) for code snippets
     - set equal to value if thread returns values
 - threads take ownership of variables
     - to use variable within thread scope, use `move` keyword
+
+## Send & Sync
+- traits for async programming
+- marker traits (properties enforced by dev) e.g. do nothing
+- both are `unsafe`
+- all rust primatives (except Rc) implement Send
+    - if custom type made up of types that all impl send => custom type is Send
+- types are Sync if they impl Send
+
+## Async Await
+- returns Future<Output>
+- top level async (usually fn main) needs to use runtime to call/poll async
+- Rust does not have runtime built into language
+- most popular async runtime is Tokio
+- to use Tokio, annotate fn main w/ `#[tokio::main]`
+    - allows for main to be set as async
+    ```rust
+    #[tokio::main]
+    async main() {}
+    ```
+
+## Streams
+tokio async can only return one value.
+to circumvent this, use tokio_stream
+common to use on servers for TcpStream

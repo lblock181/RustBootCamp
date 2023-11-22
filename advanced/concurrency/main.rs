@@ -2,9 +2,62 @@ use std::{thread, time::Duration};
 use std::sync::{mpsc, Mutex};
 use::std::sync::Arc;
 
+use tokio_stream::StreamExt;
+
 
 fn main_async() {
+    // typically used for I/O bound
     
+    // to drive/call async functions, need runtime or executor
+    //      eg Tokio
+    #[tokio::main]
+    async fn mf(i) {
+        println!("async fn");
+        let s = read_from_db().await
+        println!("s {s}");
+        let s2 = read_from_db().await;
+        println!("s2 {s2}");
+        println!("{}");
+        println!("{}");
+        println!("{}");
+        println!("{}");
+    }
+
+    async fn read_from_db() -> String {
+        "DB res".to_owned()
+    }
+
+    // TOKIO TASKS
+    // tokio tasks -> green thread
+    #[tokio::main]
+    async fn main() {
+        let mut handles = vec![];
+        for i in 0..2 {
+            let h = tokio::spawn(async move {
+                mf(i).await;
+            });
+            handles.push(h);
+        }
+
+        for h in handles {
+            h.await.unwrap();
+        }
+    }
+
+    // TOKIO STREAMS
+    // stream is async way to pass multiple values
+    #[tokio::main]
+    async fn main() {
+        // because tokio_stream takes iter, can use map on input iter
+        let mut stream = tokio_stream::iter(["This","is", "an", "iter"]);
+
+        // streams don't support for loops yet but can access using while
+        while let Some(s) = stream.next().await {
+            println!("{s}");
+        }
+    }
+
+
 }
 
 fn main_threads() {
